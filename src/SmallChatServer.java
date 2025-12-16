@@ -12,6 +12,8 @@ import java.util.Set;
  */
 public class SmallChatServer {
 
+    public static final String WELCOME_MSG = "Welcome to Small Chart! \nUse /nick <nick> to set your nick name.";
+    public static final String UNSUPPORTED_MSG = "Unsupported command!";
     public static final int DEFAULT_PORT = 20090;
 
     public static void main(String[] args) {
@@ -33,8 +35,7 @@ public class SmallChatServer {
                         client.configureBlocking(false);
                         SelectionKey clientKey = client.register(selector, SelectionKey.OP_READ);
                         socketServer.registerClient(clientKey);
-                        socketServer.sendWelcome(clientKey);
-                        clientKey.interestOps(clientKey.interestOps() | SelectionKey.OP_WRITE);
+                        socketServer.send(clientKey, WELCOME_MSG);
                         System.out.println("Connection Accepted: " + client.getRemoteAddress());
                     } else if (key.isReadable()) {
                         SocketChannel client = (SocketChannel) key.channel();
@@ -46,10 +47,15 @@ public class SmallChatServer {
                                 if (rev.startsWith("/nick")) {
                                     String nickname = rev.replace("/nick", "").trim();
                                     socketServer.updateNickname(key, nickname);
+                                    System.out.printf("%s join in.\n", nickname);
                                 } else {
-                                    socketServer.sendAll(rev);
-                                    key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+                                    socketServer.send(key, UNSUPPORTED_MSG);
                                 }
+                            } else {
+                                String nickname = socketServer.getNickname(key);
+                                String message = nickname + "> " + rev;
+                                socketServer.sendAll(key, message);
+                                System.out.println(message);
                             }
                         } else if (byteSize == -1) {
                             System.out.println("Client has disconnected: " + client.getRemoteAddress());
@@ -60,9 +66,9 @@ public class SmallChatServer {
                         SocketChannel client = (SocketChannel) key.channel();
                         ByteBuffer buffer = (ByteBuffer) key.attachment();
                         int send = client.write(buffer.duplicate());
-                        if (send > 0)
+                        if (send > 0) {
                             key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-                        else {
+                        } else {
                             System.out.println("Client has disconnected: " + client.getRemoteAddress());
                             client.close();
                             socketServer.deregisterClient(key);

@@ -65,23 +65,27 @@ public class SocketServer {
     /**
      * Send Welcome to client.
      * @param key           SelectKey.
+     * @param msg           Message.
      * @throws IOException  IOException.
      */
-    public void sendWelcome(SelectionKey key) throws IOException {
-        String msg = "Welcome to Small Chart! \nUse /nick <nick> to set your nick name.";
+    public void send(SelectionKey key, String msg) throws IOException {
         ByteBuffer buffer = ByteBufferUtils.strToBuffer(msg);
         key.attach(buffer);
+        key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
     }
 
     /**
      * Send msg to All clients.
+     * @param excludeKey    Exclude Key.
      * @param msg           Message.
      * @throws IOException  IOException.
      */
-    public void sendAll(String msg) throws IOException {
+    public void sendAll(SelectionKey excludeKey, String msg) throws IOException {
         ByteBuffer buffer = ByteBufferUtils.strToBuffer(msg);
         for (SelectionKey key : this.clients.keySet()) {
+            if (key.equals(excludeKey)) continue;
             key.attach(buffer);
+            key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
         }
     }
 }

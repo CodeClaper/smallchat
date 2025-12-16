@@ -15,7 +15,7 @@ public class SmallChatClient {
         SocketClient socketClient = new SocketClient();
         try (Selector selector = socketClient.initChatClient(DEFAULT_HOST, DEFAULT_PORT)) {
             System.out.printf("Small Chart client started. Connecting to %s:%s\n", DEFAULT_HOST, DEFAULT_PORT);
-            Scanner scanner = new Scanner(System.in);
+            socketClient.startUp();
             while (true) {
                 int numKeys = selector.select();
                 if (numKeys == 0) continue;
@@ -38,7 +38,8 @@ public class SmallChatClient {
                         int byteSize = client.read(buffer);
                         if (byteSize > 0) {
                             String rev = ByteBufferUtils.bufferToStr(buffer);
-                            System.out.println("> " + rev);
+                            System.out.println(rev);
+                            key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
                         } else if (byteSize == -1) {
                             System.out.println("Server has disconnected.");
                             client.close();
