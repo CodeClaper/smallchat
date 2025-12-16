@@ -1,10 +1,10 @@
-server: SmallChatServer.java SocketServer.java ByteBufferUtils.java Console.java
-	javac SmallChatServer.java SocketServer.java ByteBufferUtils.java Console.java
-	java SmallChatServer
+server: 
+	@$(MAKE) -C src/ server
 
-client: SmallChatClient.java SocketClient.java ByteBufferUtils.java Console.java
-	javac SmallChatClient.java SocketClient.java ByteBufferUtils.java Console.java
-	java SmallChatClient
+client: 
+	@$(MAKE) -C src/ client
 
 clean:
-	rm -f *.class
+	@$(MAKE) -C src/ clean
+
+.PHONY: server client clean
