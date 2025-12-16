@@ -7,7 +7,7 @@ This is a Java implementation for [antirez](https://github.com/antirez) project 
 
 ## How run it?
 
-I use make tool to build this project. So make sure you have installed make and JDK1.8 or aboves.
+I use make tool to build this project, so make sure you have installed make and JDK8 or aboves.
 
 Run Server:
 
