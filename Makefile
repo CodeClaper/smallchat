@@ -1,9 +1,9 @@
-server: SmallChatServer.java SocketServer.java ByteBufferUtils.java
-	javac SmallChatServer.java SocketServer.java ByteBufferUtils.java
+server: SmallChatServer.java SocketServer.java ByteBufferUtils.java Console.java
+	javac SmallChatServer.java SocketServer.java ByteBufferUtils.java Console.java
 	java SmallChatServer
 
-client: SmallChatClient.java SocketClient.java ByteBufferUtils.java
-	javac SmallChatClient.java SocketClient.java ByteBufferUtils.java
+client: SmallChatClient.java SocketClient.java ByteBufferUtils.java Console.java
+	javac SmallChatClient.java SocketClient.java ByteBufferUtils.java Console.java
 	java SmallChatClient
 
 clean:

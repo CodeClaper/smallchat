@@ -33,14 +33,18 @@ public class SocketClient implements Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 String line = scanner.nextLine();
+                Console.clearInput();
                 if (this.client == null) {
                     System.out.println("Not join.");
                 } else if (line != null && !line.isEmpty()) {
                     this.client.write(ByteBufferUtils.strToBuffer(line));
                     if (!line.startsWith("/")) {
-                        String clearSequence = "\033[1A\033[2K";
-                        System.out.print(clearSequence);
-                        System.out.println("You> " + line);
+                        System.out.print("\n");
+                        Console.clearInput();
+                        System.out.println("You > " + line);
+                    } else if (line.equalsIgnoreCase("/EXIT")) {
+                        scanner.close();
+                        System.exit(1);
                     }
                 }
             }

@@ -47,13 +47,13 @@ public class SmallChatServer {
                                 if (rev.startsWith("/nick")) {
                                     String nickname = rev.replace("/nick", "").trim();
                                     socketServer.updateNickname(key, nickname);
-                                    System.out.printf("%s join in.\n", nickname);
+                                    System.out.printf("system > %s join in.\n", nickname);
                                 } else {
                                     socketServer.send(key, UNSUPPORTED_MSG);
                                 }
                             } else {
                                 String nickname = socketServer.getNickname(key);
-                                String message = nickname + "> " + rev;
+                                String message = nickname + " > " + rev;
                                 socketServer.sendAll(key, message);
                                 System.out.println(message);
                             }
