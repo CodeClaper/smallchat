@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class SocketServer {
 
+    private static final String DEFAULT_NAME = "anonymous"; 
     private final Map<SelectionKey, String> clients;
 
     public SocketServer() {
@@ -33,7 +34,7 @@ public class SocketServer {
      * @param key   SelectionKey.
      */
     public void registerClient(SelectionKey key) {
-        this.clients.put(key, null);
+        this.clients.put(key, DEFAULT_NAME);
     }
 
     /**
@@ -50,7 +51,7 @@ public class SocketServer {
      * @param nickname  Nickname.
      */
     public void updateNickname(SelectionKey key, String nickname) {
-        this.clients.replace(key, null, nickname);
+        this.clients.replace(key, DEFAULT_NAME, nickname);
     }
 
     /**
@@ -59,7 +60,7 @@ public class SocketServer {
      * @return          Nickname or default('anonymous').
      */
     public String getNickname(SelectionKey key) {
-        return this.clients.getOrDefault(key, "anonymous");
+        return this.clients.getOrDefault(key, DEFAULT_NAME);
     }
 
     /**

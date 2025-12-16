@@ -44,7 +44,7 @@ public class SocketClient implements Runnable {
                         System.out.println("You > " + line);
                     } else if (line.equalsIgnoreCase("/EXIT")) {
                         scanner.close();
-                        System.exit(1);
+                        System.exit(0);
                     }
                 }
             }

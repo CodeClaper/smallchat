@@ -47,7 +47,16 @@ public class SmallChatServer {
                                 if (rev.startsWith("/nick")) {
                                     String nickname = rev.replace("/nick", "").trim();
                                     socketServer.updateNickname(key, nickname);
-                                    System.out.printf("system > %s join in.\n", nickname);
+                                    String message = "system > " + nickname + " join in.";
+                                    socketServer.sendAll(null, message);
+                                    System.out.printf(message);
+                                } else if (rev.startsWith("/exit")) {
+                                    String nickname = socketServer.getNickname(key);
+                                    socketServer.deregisterClient(key);
+                                    client.close();
+                                    String message = "system > " + nickname + " leave.";
+                                    socketServer.sendAll(null, message);
+                                    System.out.printf(message);
                                 } else {
                                     socketServer.send(key, UNSUPPORTED_MSG);
                                 }
