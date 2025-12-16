@@ -1,4 +1,3 @@
-import javax.swing.plaf.TableHeaderUI;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -38,6 +37,11 @@ public class SocketClient implements Runnable {
                     System.out.println("Not join.");
                 } else if (line != null && !line.isEmpty()) {
                     this.client.write(ByteBufferUtils.strToBuffer(line));
+                    if (!line.startsWith("/")) {
+                        String clearSequence = "\033[1A\033[2K";
+                        System.out.print(clearSequence);
+                        System.out.println("You> " + line);
+                    }
                 }
             }
         } catch (Exception ex) {
