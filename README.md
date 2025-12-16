@@ -1,13 +1,13 @@
 # SmallChat
 
-## What's this
+## What's this?
 
 This is a Java implementation for [antirez](https://github.com/antirez) project [smallchat](https://github.com/antirez/smallchat) using NIO.
 
 
-## How run
+## How run it?
 
-We use make tool to build this project. So make sure you have installed make and JDK1.8 or aboves.
+I use make tool to build this project. So make sure you have installed make and JDK1.8 or aboves.
 
 Run Server:
 
